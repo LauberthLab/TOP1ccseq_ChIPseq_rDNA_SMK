@@ -1,6 +1,6 @@
 # TOP1cc ChIP-seq Snakemake Pipeline
 
-A Snakemake pipeline for processing TOP1 cleavage complex (TOP1cc) ChIP-seq data with *Drosophila* spike-in normalization, designed for the Northwestern Quest HPC cluster (SLURM).
+A Snakemake pipeline for processing TOP1 cleavage complex (TOP1cc) and ChIP-seq data for simultaneously profiling hg38 and rDNA (as chrR) with *Drosophila* spike-in normalization 
 
 ---
 
