@@ -22,7 +22,7 @@ rule bigwig_rep:
         bin_size    = config["bin_size"],
     threads: config["threads"]
     resources:
-        runtime         = "02:00:00",
+        runtime         = 120,
         mem_mb          = 51200,
         slurm_account   = config["slurm_account"],
         slurm_partition = config["slurm_partition"],

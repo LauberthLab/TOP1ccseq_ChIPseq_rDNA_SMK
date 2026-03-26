@@ -8,7 +8,7 @@ slurm_partition: "short"
 
 # ---- Paths ------------------------------------------------------------------
 fastq_dir: "/projects/b1042/LauberthLab/TOP1_nucleolus/21161-76-07032025_135621/FASTQ"
-out_dir: "/projects/b1042/LauberthLab/snakemake_pipelines/TOP1cc_ChIPseq_smk/Run/all_pipeline_outputs/pipeline_out"
+out_dir: "/projects/b1042/LauberthLab/TOP1_nucleolus/TOP1ccseq_ChIPseq_rDNA_SMK/Run/all_pipeline_outputs/pipeline_out"
 metadata: "/projects/b1042/LauberthLab/snakemake_pipelines/TOP1cc_ChIPseq_smk/Run/metadata.tsv"
 
 # Genome indices
