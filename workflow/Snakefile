@@ -1,0 +1,65 @@
+import pandas as pd
+import re
+
+configfile: "config/config.yaml"
+
+samples_df = pd.read_csv(config["metadata"], sep="\t", comment="#")
+samples_df = samples_df.set_index("sample_id")
+
+ALL_SAMPLES   = samples_df.index.tolist()
+IP_SAMPLES    = samples_df[samples_df["type"] == "IP"].index.tolist()
+INPUT_SAMPLES = samples_df[samples_df["type"] == "Input"].index.tolist()
+
+FASTQ_PREFIX  = samples_df["fastq_prefix"].to_dict()
+IP_TO_INPUT   = samples_df.loc[IP_SAMPLES, "input_for"].to_dict()
+
+GROUPS = {}
+for sid in IP_SAMPLES:
+    row = samples_df.loc[sid]
+    key = f"{row['condition']}_{row['timepoint']}"
+    GROUPS.setdefault(key, []).append(sid)
+
+def bw_rep_name(sid):
+    row = samples_df.loc[sid]
+    return f"{row['condition']}_{row['timepoint']}_log2_rep{int(row['replicate'])}_wrDNA"
+
+BW_REP_NAMES    = [bw_rep_name(s) for s in IP_SAMPLES]
+BW_MERGED_NAMES = [f"{g}_log2_merged_wrDNA" for g in GROUPS]
+
+def peak_name(sid):
+    row = samples_df.loc[sid]
+    return f"{row['condition']}_{row['timepoint']}_TOP1cc_rep{int(row['replicate'])}_wrDNA"
+
+PEAK_NAMES    = [peak_name(s) for s in IP_SAMPLES]
+BW_TO_IP      = {bw_rep_name(s): s for s in IP_SAMPLES}
+BW_TO_INPUT   = {bw_rep_name(s): IP_TO_INPUT[s] for s in IP_SAMPLES}
+PEAK_TO_IP    = {peak_name(s): s for s in IP_SAMPLES}
+PEAK_TO_INPUT = {peak_name(s): IP_TO_INPUT[s] for s in IP_SAMPLES}
+
+OUT_DIR = config["out_dir"]
+
+wildcard_constraints:
+    sample    = "|".join(re.escape(s) for s in ALL_SAMPLES),
+    ip_sample = "|".join(re.escape(s) for s in IP_SAMPLES),
+    group     = "|".join(re.escape(g) for g in GROUPS),
+    bw_name   = "|".join(re.escape(n) for n in BW_REP_NAMES),
+    peak_name = "|".join(re.escape(n) for n in PEAK_NAMES),
+
+include: "rules/fastqc.smk"
+include: "rules/trim.smk"
+include: "rules/align_genome.smk"
+include: "rules/align_spike.smk"
+include: "rules/normalize.smk"
+include: "rules/downsample.smk"
+include: "rules/bigwigs.smk"
+include: "rules/featurecounts.smk"
+include: "rules/peaks.smk"
+include: "rules/multiqc.smk"
+
+rule all:
+    input:
+        expand(OUT_DIR + "/bigwigs/{bw}.bw", bw=BW_REP_NAMES),
+        expand(OUT_DIR + "/bigwigs/{bw}.bw", bw=BW_MERGED_NAMES),
+        expand(OUT_DIR + "/peaks/{name}_peaks.narrowPeak", name=PEAK_NAMES),
+        OUT_DIR + "/counts/raw_counts_TOP1cc_all.txt",
+        OUT_DIR + "/multiqc_report/multiqc_report.html",

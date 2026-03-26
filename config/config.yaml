@@ -1,0 +1,40 @@
+# =============================================================================
+# config.yaml — Snakemake configuration for the TOP1cc ChIP-seq rDNA pipeline
+# =============================================================================
+
+# ---- SLURM allocation -------------------------------------------------------
+slurm_account: "p32170"
+slurm_partition: "short"
+
+# ---- Paths ------------------------------------------------------------------
+fastq_dir: "/projects/b1042/LauberthLab/TOP1_nucleolus/21161-76-07032025_135621/FASTQ"
+out_dir: "/projects/b1042/LauberthLab/snakemake_pipelines/TOP1cc_ChIPseq_smk/Run/all_pipeline_outputs/pipeline_out"
+metadata: "/projects/b1042/LauberthLab/snakemake_pipelines/TOP1cc_ChIPseq_smk/Run/metadata.tsv"
+
+# Genome indices
+genome_index: "/projects/b1042/LauberthLab/indices/hg38_rDNA_v1.0"
+spike_index: "/projects/b1042/LauberthLab/Genome/BDGP6/BDGP6"
+gtf: "/projects/b1042/LauberthLab/Genome/20220806_hg38_refseq_chrR_KY962518.1_35500cut_renamed_corrected.gtf"
+fastq_screen: "/projects/p32170/YEATS2/FastQ-Screen-0.15.3/fastq_screen"
+
+# ---- Processing parameters --------------------------------------------------
+threads: 30
+mapq: 10
+trim_quality: 30
+bin_size: 10
+
+# MACS2
+macs2_format: "BAMPE"
+macs2_qvalue: 0.05
+macs2_mfold_lo: 5
+macs2_mfold_hi: 50
+macs2_bw: 300
+
+# featureCounts
+fc_feature: "gene"
+fc_attribute: "gene_name"
+fc_strandedness: 0
+
+# bamCompare
+bw_normalize: "BPM"
+bw_pseudocount: 1

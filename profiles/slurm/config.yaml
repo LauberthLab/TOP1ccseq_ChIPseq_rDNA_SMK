@@ -1,0 +1,25 @@
+cluster: >-
+  sbatch --parsable
+  -A {resources.slurm_account}
+  -p {resources.slurm_partition}
+  -N 1
+  -n {threads}
+  -t {resources.runtime}
+  --mem={resources.mem_mb}M
+  --job-name=smk_{rule}
+  -o {log}
+  -e {log}
+
+default-resources:
+  - slurm_account="p32170"
+  - slurm_partition="short"
+  - runtime=480
+  - mem_mb=16000
+
+
+jobs: 50
+latency-wait: 60
+rerun-incomplete: true
+keep-going: true
+cluster-status: "bash profiles/slurm/status.sh"
+

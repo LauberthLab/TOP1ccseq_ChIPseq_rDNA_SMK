@@ -1,0 +1,23 @@
+# Pipeline outputs
+Run/
+
+# Snakemake internals
+.snakemake/
+
+# SLURM output files
+slurm-*.out
+
+# Byte-compiled / cached Python
+__pycache__/
+*.py[cod]
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor backups
+*~
+*.swp
+*.swo
+.vscode/
+.idea/
