@@ -31,16 +31,6 @@ raw FASTQs
     └── multiqc (aggregate all QC reports)
 ```
 
-### Experimental design
-
-8 IP + 8 matched Input samples across 4 conditions:
-
-| Condition | Timepoint | Replicates |
-|-----------|-----------|------------|
-| DMSO      | 6h        | 2          |
-| DMSO      | 24h       | 2          |
-| ISD       | 6h        | 2          |
-| ISD       | 24h       | 2          |
 
 ---
 
