@@ -11,7 +11,7 @@ cluster: >-
   -e {log}
 
 default-resources:
-  - slurm_account="p32170"
+  - slurm_account="slurm_allocation"
   - slurm_partition="short"
   - runtime=480
   - mem_mb=16000
